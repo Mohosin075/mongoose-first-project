@@ -134,7 +134,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     }
   },
   dateOfBirth: {
-    type: String,
+    type: Date,
     trim : true,
   },
   contactNo: {
@@ -179,8 +179,16 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     type: String,
     trim : true,
   },
+  academicSemester : {
+    type : Schema.Types.ObjectId,
+    ref : 'AcademicSemester'
+  },
   isDeleted : {
     type : Boolean
+  },
+  academicDepartment : {
+    type : Schema.Types.ObjectId,
+    ref : 'AcademicDepartment'
   }
 }, {
   toJSON : {
@@ -231,6 +239,7 @@ studentSchema.pre('aggregate', function(next){
 studentSchema.statics.isUserExists = async function (id: string) {
     const existingUser = await Student.findOne({id});
 
+    console.log(existingUser);
     return existingUser
 }
 

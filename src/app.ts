@@ -19,7 +19,8 @@ app.use(cors());
 app.use('/api/v1/', router)
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('hello vai hello ki khobor apnr!');
+  Promise.reject()
+  res.send('server is running.....!');
 });
 
 
