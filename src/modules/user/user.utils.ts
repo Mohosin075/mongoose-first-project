@@ -17,7 +17,6 @@ const findLastStudentId = async () => {
   .lean();
 
 
-  console.log("student", lastStudent);
   return lastStudent?.id ? lastStudent?.id : undefined
 
 };

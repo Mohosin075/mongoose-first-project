@@ -3,7 +3,7 @@ import { ZodError } from 'zod';
 import { TErrorSources } from '../interface/error';
 import config from '../app/config';
 import handleZodError from '../error/handleZodError';
-import handleValidationError from './handleValidationError';
+import handleValidationError from '../error/handleValidationError';
 import handleCastError from '../error/handleCastError';
 import handleDuplicateError from '../error/handleDuplicateError';
 import AppError from '../error/AppError';
