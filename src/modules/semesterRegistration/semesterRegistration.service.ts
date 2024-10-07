@@ -62,7 +62,6 @@ const getAllSemesterRegistrationFromDb = async (
     .fields();
 
   const result = await semesterRegistrationQuery.modelQuery;
-
   return result;
 };
 const getSingleSemesterRegistrationFromDb = async (id: string) => {
@@ -79,7 +78,6 @@ const deleteSemesterRegistrationFromDb = async (id: string) => {
 
     const isSemesterRegistrationExist = await SemesterRegistration.findById(id);
 
-
     if (!isSemesterRegistrationExist) {
       throw new AppError(
         httpStatus.NOT_FOUND,
@@ -91,7 +89,7 @@ const deleteSemesterRegistrationFromDb = async (id: string) => {
 
     const semesterRegistrationStatus = isSemesterRegistrationExist?.status;
 
-    if(semesterRegistrationStatus !== 'UPCOMING'){
+    if (semesterRegistrationStatus !== 'UPCOMING') {
       throw new AppError(
         httpStatus.BAD_REQUEST,
         `You can not delete semester registration in status : ${semesterRegistrationStatus}`,
@@ -102,16 +100,17 @@ const deleteSemesterRegistrationFromDb = async (id: string) => {
       semesterRegistration: id,
     }).session(session);
 
-    const result = await SemesterRegistration.findByIdAndDelete(id).session(session);
+    const result =
+      await SemesterRegistration.findByIdAndDelete(id).session(session);
 
     await session.commitTransaction();
-    await session.endSession()
+    await session.endSession();
 
     return result;
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
-    throw error
+    throw error;
   }
 };
 

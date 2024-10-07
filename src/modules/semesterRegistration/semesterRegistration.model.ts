@@ -22,12 +22,12 @@ const semesterRegistrationSchema = new Schema<TSemesterRegistration>({
   },
   minCredit: {
     type: Number,
-    default : 3,
-    min : 3
+    default: 3,
+    min: 3,
   },
   maxCredit: {
     type: Number,
-    max : 14
+    max: 14,
   },
 });
 

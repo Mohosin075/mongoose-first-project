@@ -78,6 +78,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
   const studentQuery = new QueryBuilder(
     Student.find()
+    .populate('user')
       .populate('academicSemester')
       .populate({
         path: 'academicDepartment',
@@ -101,7 +102,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 const getSingleStudentFromDB = async (id: string) => {
   // const result = await Student.findOne({id})
 
-  const result = await Student.findById( id ).populate({
+  const result = await Student.findById(id).populate({
     path: 'academicDepartment',
     populate: {
       path: 'academicFaculty',
@@ -137,7 +138,7 @@ const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
 
   console.log(modifiedUpdatedData);
 
-  const result = await Student.findByIdAndUpdate( id , modifiedUpdatedData, {
+  const result = await Student.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
@@ -152,7 +153,7 @@ const deleteStudentFromDB = async (id: string) => {
     session.startTransaction();
 
     const deletedStudent = await Student.findByIdAndUpdate(
-       id ,
+      id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -163,7 +164,7 @@ const deleteStudentFromDB = async (id: string) => {
 
     const userId = deletedStudent.user;
     const deletedUser = await User.findByIdAndUpdate(
-      userId ,
+      userId,
       { isDeleted: true },
       { new: true, session },
     );

@@ -38,9 +38,9 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
     }
   }
 
-  console.log({id}, {modifiedUpdatedData});
+  console.log({ id }, { modifiedUpdatedData });
 
-  const result = await Admin.findByIdAndUpdate( id , modifiedUpdatedData, {
+  const result = await Admin.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });

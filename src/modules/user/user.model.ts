@@ -1,18 +1,24 @@
-
 import { model, Schema } from 'mongoose';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import config from '../../app/config';
-import bcrypt from 'bcrypt'
-const userSchema = new Schema<TUser>(
+import bcrypt from 'bcrypt';
+import { USER_STATUS } from './user.constant';
+const userSchema = new Schema<TUser, UserModel>(
   {
     id: {
       type: String,
       required: true,
-      unique : true
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
+      select: 0
     },
     needsPasswordChange: {
       type: Boolean,
@@ -24,42 +30,63 @@ const userSchema = new Schema<TUser>(
     },
     status: {
       type: String,
-      enum: ['in-progress', 'blocked'],
+      enum: USER_STATUS,
       default: 'in-progress',
     },
     isDeleted: {
       type: Boolean,
       default: false,
     },
+    passwordChangeAt :{
+      type : Date
+    }
   },
   {
     timestamps: true,
   },
 );
 
-
 // pre save middleware/hooks : will work on create() or save() function
 
-userSchema.pre('save', async function(next){
+userSchema.pre('save', async function (next) {
   // console.log(this, 'pre hook : we will save data');
 
-  const user = this
+  const user = this;
 
-  user.password =  await bcrypt.hash(user.password, Number(config.bcrypt_salt_round))
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
 
-  next()
-
-})
+  next();
+});
 
 // post save middleware/hooks
 
-userSchema.post('save', function(doc, next){
-  
-  doc.password =  ''
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
 
-  next()
-})
-
+  next();
+});
 
 
-export const User = model<TUser>('User', userSchema)
+userSchema.statics.isUserExistByCustomId = async function(id : string){
+  return await User.findOne({id}).select('+password')
+}
+
+userSchema.statics.isPasswordMatched = async function(plaintextPassword, hashedPassword){
+
+  return await bcrypt.compare(plaintextPassword, hashedPassword)
+
+}
+
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function(passwordChangedTimestamp : Date, jwtIssuedTimestamp : number){
+  const passwordChangeTime =new Date(passwordChangedTimestamp).getTime() / 1000
+
+  return passwordChangeTime > jwtIssuedTimestamp
+
+}
+
+
+
+export const User = model<TUser, UserModel>('User', userSchema);

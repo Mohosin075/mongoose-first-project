@@ -13,7 +13,13 @@ router.post(
   SemesterRegistrationController.createSemesterRegistration,
 );
 
-router.patch('/:id', validateRequest(SemesterRegistrationValidations.updateSemesterRegistrationValidationSchema), SemesterRegistrationController.updateSemesterRegistration);
+router.patch(
+  '/:id',
+  validateRequest(
+    SemesterRegistrationValidations.updateSemesterRegistrationValidationSchema,
+  ),
+  SemesterRegistrationController.updateSemesterRegistration,
+);
 
 router.get(
   '/:id',

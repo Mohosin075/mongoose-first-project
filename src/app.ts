@@ -5,27 +5,27 @@ import { UserRoutes } from './modules/user/user.route';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import notFound from './middleware/notFound';
 import router from './routes';
+import cookieParser  from 'cookie-parser'
 const app: Application = express();
 
 // parser
 
 app.use(express.json());
 
-app.use(cors());
-
+app.use(cors({origin : ['http://localhost:5000']}));
+app.use(cookieParser())
 
 // application routes
 
-app.use('/api/v1/', router)
+app.use('/api/v1/', router);
 
 app.get('/', (req: Request, res: Response) => {
-  Promise.reject()
+  Promise.reject();
   res.send('server is running.....!');
 });
 
-
 app.use(globalErrorHandler);
 
-app.use(notFound)
+app.use(notFound);
 
 export default app;

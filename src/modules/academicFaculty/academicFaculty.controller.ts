@@ -1,21 +1,20 @@
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
+import { AcademicFacultyServices } from './academicFaculty.services';
 
-import sendResponse from "../../utils/sendResponse";
-import httpStatus from "http-status";
-import catchAsync from "../../utils/catchAsync";
-import { AcademicFacultyServices } from "./academicFaculty.services";
-
-const createAcademicFaculty = catchAsync(async (req, res, next ) => {
-
-const result = await AcademicFacultyServices.createAcademicFacultyIntoDB(req.body)
+const createAcademicFaculty = catchAsync(async (req, res, next) => {
+  const result = await AcademicFacultyServices.createAcademicFacultyIntoDB(
+    req.body,
+  );
 
   sendResponse(res, {
-    statusCode : httpStatus.OK,
-    success : true,
-    message : "Academic faculty is created successfully.",
-    data : result
-  })
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic faculty is created successfully.',
+    data: result,
+  });
 });
-
 
 const getAllAcademicFaculties = catchAsync(async (req, res) => {
   const result = await AcademicFacultyServices.getAllAcademicFacultiesFromDB();
@@ -56,9 +55,9 @@ const updateAcademicFaculty = catchAsync(async (req, res) => {
   });
 });
 
-  export const AcademicFacultyControllers = {
-    createAcademicFaculty,
-    getAllAcademicFaculties,
-    getSingleAcademicFaculty,
-    updateAcademicFaculty    
-  }
+export const AcademicFacultyControllers = {
+  createAcademicFaculty,
+  getAllAcademicFaculties,
+  getSingleAcademicFaculty,
+  updateAcademicFaculty,
+};

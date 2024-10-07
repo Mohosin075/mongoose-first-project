@@ -1,17 +1,23 @@
+import { Model } from "mongoose";
+import { USER_ROLE } from "./user.constant";
 
+export interface TUser {
+  id: string;
+  email : string,
+  password: string;
+  needsPasswordChange: boolean;
+  role: 'admin' | 'student' | 'faculty';
+  status: 'in-progress' | 'blocked';
+  isDeleted: boolean;
+  passwordChangeAt ?: Date
+};
 
-export type TUser = {
-    id: string;
-    password: string;
-    needsPasswordChange: boolean;
-    role: 'admin' | 'student' | 'faculty';
-    status: 'in-progress' | 'blocked';
-    isDeleted: boolean;
-  };
+export interface UserModel extends Model<TUser> {
+  // myStaticMethod(): number;
 
+  isUserExistByCustomId(id : string) : Promise<TUser>
+  isPasswordMatched(plaintextPassword : string, hashedPassword: string) : Promise<boolean>
+  isJWTIssuedBeforePasswordChanged(passwordChangedTimestamp : Date, jwtIssuedTimestamp : number) : boolean
+}
 
-  export type TNewUser = {
-    password : string;
-    role : string;
-    id : string
-  }
+export type TUserRole = keyof typeof USER_ROLE

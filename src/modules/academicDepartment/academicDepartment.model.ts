@@ -12,7 +12,7 @@ const AcademicDepartmentSchema = new Schema<TAcademicDepartment>(
     },
     academicFaculty: {
       type: Schema.Types.ObjectId,
-      ref : "AcademicFaculty"
+      ref: 'AcademicFaculty',
     },
   },
   {
@@ -31,8 +31,6 @@ const AcademicDepartmentSchema = new Schema<TAcademicDepartment>(
 //   next();
 // });
 
-
-
 // for update validation - use Query
 AcademicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   const query = this.getQuery();
@@ -40,7 +38,7 @@ AcademicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   console.log(query);
 
   const isDepartmentExist = await AcademicDepartment.findOne({
-    query
+    query,
   });
 
   if (!isDepartmentExist) {
