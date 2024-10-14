@@ -4,7 +4,7 @@ import { User } from '../user/user.model';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../app/config';
 import bcrypt from 'bcrypt';
-import { createToken, verifyJWT, verifyToken } from './auth.utils';
+import { createToken,  verifyToken } from './auth.utils';
 import { sendEmail } from '../../utils/sendMail';
 
 const loginUser = async (payload: TLoginUser) => {

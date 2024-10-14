@@ -27,7 +27,7 @@ const semesterRegistrationSchema = new Schema<TSemesterRegistration>({
   },
   maxCredit: {
     type: Number,
-    max: 14,
+    max: 16,
   },
 });
 

@@ -14,15 +14,6 @@ const userNameSchema = new Schema<TUserName>({
     trim: true,
     required: [true, 'First name is required'],
     maxlength: [20, 'First name can not be more then 20'],
-    validate: {
-      validator: function (value: string) {
-        console.log('check error', value);
-        const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-        console.log(firstNameStr);
-        return firstNameStr === value;
-      },
-      message: '{VALUE} is not capitalized format',
-    },
   },
   middleName: {
     type: String,
@@ -177,7 +168,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     profileImg: {
       type: String,
-      trim: true,
+      default : ''
     },
     academicSemester: {
       type: Schema.Types.ObjectId,
@@ -189,6 +180,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     academicDepartment: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicDepartment',
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicFaculty',
     },
   },
   {

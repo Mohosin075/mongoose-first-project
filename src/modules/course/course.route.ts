@@ -1,49 +1,77 @@
 import express from 'express';
-import validateRequest from '../../middleware/validateRequest';
-import { CourseValidation } from './course.validation';
 import { CourseControllers } from './course.controller';
+import { CourseValidation } from './course.validation';
+import { USER_ROLE } from '../user/user.constant';
 import auth from '../../middleware/auth';
+import validateRequest from '../../middleware/validateRequest';
 
 const router = express.Router();
 
 router.post(
   '/create-course',
-  auth('admin'),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(CourseValidation.createCourseValidationSchema),
   CourseControllers.createCourse,
 );
 
 router.get(
-  '/',
-  auth('admin', 'faculty', 'student'),
-  CourseControllers.getAllCourses,
-);
-
-router.get(
   '/:id',
-  auth('admin', 'faculty', 'student'),
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
   CourseControllers.getSingleCourse,
 );
 
 router.patch(
   '/:id',
-  auth('admin'),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(CourseValidation.updateCourseValidationSchema),
   CourseControllers.updateCourse,
 );
 
-router.delete('/:id', auth('admin'), CourseControllers.deleteCourse);
+router.delete(
+  '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  CourseControllers.deleteCourse,
+);
 
 router.put(
   '/:courseId/assign-faculties',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(CourseValidation.facultiesWithCourseValidationSchema),
   CourseControllers.assignFacultiesWithCourse,
 );
 
+router.get(
+  '/:courseId/get-faculties',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
+  CourseControllers.getFacultiesWithCourse,
+);
+
 router.delete(
-  '/:courseId/delete-faculties',
+  '/:courseId/remove-faculties',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(CourseValidation.facultiesWithCourseValidationSchema),
   CourseControllers.removeFacultiesFromCourse,
+);
+
+router.get(
+  '/',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
+  CourseControllers.getAllCourses,
 );
 
 export const CourseRoutes = router;

@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+import AppError from '../../error/AppError';
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemester } from './academicSemester.model';
@@ -25,6 +27,13 @@ const updateAcademicSemesterIntoDB = async (
   id: string,
   payload: Partial<TAcademicSemester>,
 ) => {
+
+  const isAcademicSemesterExist = await AcademicSemester.findById(id);
+
+  if(!isAcademicSemesterExist){
+    throw new AppError(httpStatus.NOT_FOUND, 'This Academic Semester is not found!')
+  }
+
   if (
     payload.name &&
     payload.code &&
