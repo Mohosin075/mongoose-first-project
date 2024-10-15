@@ -215,20 +215,22 @@ const updateEnrolledCourseMarks = async (
     ...courseMarks,
   };
 
-  if(courseMarks?.finalTerm){
-    const {classTest1, midTerm, classTest2, finalTerm} = isCourseBelongToFaculty.courseMarks;
+  if (courseMarks?.finalTerm) {
+    const { classTest1, midTerm, classTest2, finalTerm } =
+      isCourseBelongToFaculty.courseMarks;
 
-    const totalMarks = Math.ceil(classTest1*0.1) + Math.ceil(midTerm*0.30) + Math.ceil(classTest2*0.1) + Math.ceil(finalTerm*0.50)
-
+    const totalMarks =
+      Math.ceil(classTest1) +
+      Math.ceil(midTerm) +
+      Math.ceil(classTest2) +
+      Math.ceil(finalTerm);
 
     const result = calculateGradeAndPoints(totalMarks);
 
-    modifiedData.grade = result.grade
-    modifiedData.gradePoints = result.gradePoint
-    modifiedData.isCompleted = true
+    modifiedData.grade = result.grade;
+    modifiedData.gradePoints = result.gradePoint;
+    modifiedData.isCompleted = true;
   }
-
-
 
   if (courseMarks && Object.keys(courseMarks).length) {
     for (const [key, value] of Object.entries(courseMarks)) {
@@ -244,7 +246,7 @@ const updateEnrolledCourseMarks = async (
     },
   );
 
-  return result
+  return result;
 };
 
 export const EnrolledCourseServices = {

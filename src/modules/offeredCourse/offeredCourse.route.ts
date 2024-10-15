@@ -24,11 +24,11 @@ router.get(
   OfferedCourseControllers.getAllOfferedCourse,
 );
 
-// router.get(
-//   '/my-offered-course',
-//   auth(USER_ROLE.student),
-//   OfferedCourseControllers.getMyOfferedCourse,
-// );
+router.get(
+  '/my-offered-course',
+  auth(USER_ROLE.student),
+  OfferedCourseControllers.getMyOfferedCourse,
+);
 
 router.get(
   '/:id',
